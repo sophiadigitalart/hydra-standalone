@@ -56,6 +56,14 @@ var Editor = function ({
         var s = instance.getLine(c.line)
         self.eval(s)
       },
+      'Ctrl-Space': function (instance) {
+        var text = self.autoComplete(instance)
+        console.log('autocomp', text)
+      },
+      /* 'Ctrl-M': function (instance) {
+        self.midi(instance)
+        console.log('midi')
+      }, */
       'Shift-Ctrl-S': function (instance) {
         screencap()
       },
@@ -128,7 +136,8 @@ Editor.prototype.eval = function (arg, callback) {
   if (!isError){
     try {
       eval(jsString)
-      self.log(jsString)
+      //self.log(jsString)
+      self.log("Ok")
     } catch (e) {
       isError = true
       self.log(e.message, "log-error")
@@ -160,6 +169,154 @@ Editor.prototype.selectCurrentBlock = function (editor) { // thanks to graham wa
     ch: 0
   }
   var str = editor.getRange(pos1, pos2)
+  return {
+    start: pos1,
+    end: pos2,
+    text: str
+  }
+}
+
+Editor.prototype.autoComplete = function (editor) { 
+  var pos = editor.getCursor()
+  var startline = pos.line
+  var pos1 = {
+    line: pos.line,
+    ch: pos.ch - 1
+  }
+  var pos2 = {
+    line: pos.line,
+    ch: pos.ch
+  }
+  var str = editor.getRange(pos1, pos2)
+  switch (str) {
+    case '2':
+      editor.replaceRange('vec2 vv = vec2(0.0, 0.0);', pos1, pos2)
+      pos1.ch += 5;
+      pos2.ch += 6;
+      editor.setSelection(pos1, pos2)
+      break;
+    case '3':
+      editor.replaceRange('vec3 vvv = vec3(0.0, 0.0, 0.0);', pos1, pos2)
+      pos1.ch += 5;
+      pos2.ch += 7;
+      editor.setSelection(pos1, pos2)
+      break;
+    case '4':
+      editor.replaceRange('vec4 vvvv = vec4(0.0, 0.0, 0.0, 0.0);', pos1, pos2)
+      pos1.ch += 5;
+      pos2.ch += 8;
+      editor.setSelection(pos1, pos2)
+      break;
+    case '1':
+      editor.replaceRange('float f = 0.0;', pos1, pos2)
+      pos1.ch += 6;
+      pos2.ch += 6;
+      editor.setSelection(pos1, pos2)
+      break;
+    case '{':
+      editor.replaceRange(`{;}`, pos1, pos2)
+      break;
+    case '(':
+      editor.replaceRange(`()`, pos1, pos2)
+      break;
+    // functions
+    case 'f':
+      editor.replaceRange(`float fcf(in vec3 pos) {float f = 0.0;return f;}`, pos1, pos2)
+      pos1.ch += 6;
+      pos2.ch += 8;
+      editor.setSelection(pos1, pos2)
+      break;
+    case 'g':
+      editor.replaceRange(`vec2 fc2(in vec3 pos) {vec2 vv = vec2(0.0, 0.0);return vv;}`, pos1, pos2)
+      pos1.ch += 5;
+      pos2.ch += 7;
+      editor.setSelection(pos1, pos2)
+      break;
+    case 'h':
+      editor.replaceRange(`vec3 fc3(in vec3 pos) {vec3 vvv = vec3(0.0, 0.0, 0.0);return vvv;}`, pos1, pos2)
+      pos1.ch += 5;
+      pos2.ch += 7;
+      editor.setSelection(pos1, pos2)
+      break;
+    case 'j':
+      editor.replaceRange(`vec4 fc4(in vec3 pos) {vec4 vvvv = vec4(0.0, 0.0, 0.0, 0.0);return vvvv;}`, pos1, pos2)
+      pos1.ch += 5;
+      pos2.ch += 7;
+      editor.setSelection(pos1, pos2)
+      break;
+      // objects
+    case 'c':
+      break;
+    case 'v':
+      break;
+    case 'b':
+      break;
+    case 'n':
+      break;
+    // main
+    case 'm':
+      editor.replaceRange(`void main () {vec2 st = (2.0*gl_FragCoord.xy-resolution.xy)/resolution.xy; gl_FragColor = vec4(st.x,st.y,0.0,1.0);}`, pos1, pos2)
+      pos1.ch += 74;
+      pos2.ch += 74;
+      editor.setSelection(pos1, pos2)
+      break;
+    // for
+    case 'r':
+      editor.replaceRange('for (int i=0; i<2 ;i++) { }', pos1, pos2)
+      pos1.ch += 25;
+      pos2.ch += 25;
+      editor.setSelection(pos1, pos2)
+      break;
+    case 's':
+      editor.replaceRange('sin(time)', pos1, pos2)
+      pos1.ch += 4;
+      pos2.ch += 7;
+      editor.setSelection(pos1, pos2)
+      break;
+    case 'c':
+      editor.replaceRange('cos(time)', pos1, pos2)
+      pos1.ch += 4;
+      pos2.ch += 7;
+      editor.setSelection(pos1, pos2)
+      break;
+    // if   
+    case '=':
+      editor.replaceRange('if (i==0.0) { } else { }', pos1, pos2)
+      pos1.ch += 13;
+      pos2.ch += 13;
+      editor.setSelection(pos1, pos2)
+      break;
+    case '>':
+      editor.replaceRange('if (i>0.0) { } else { }', pos1, pos2)
+      pos1.ch += 12;
+      pos2.ch += 12;
+      editor.setSelection(pos1, pos2)
+      break;
+    case '<':
+      editor.replaceRange('if (i<0.0) { } else { }', pos1, pos2)
+      pos1.ch += 12;
+      pos2.ch += 12;
+      editor.setSelection(pos1, pos2)
+      break;
+      /*case 't':
+          editor.replaceRange('vec4 t0 = texture2D(tex0, st);', pos1, pos2)
+          pos1.ch += 10;
+          pos2.ch += 10;
+          editor.setSelection(pos1, pos2)
+          break; */
+    
+    case '#':
+      editor.replaceRange(`#if V==1
+      #else
+      #endif`, pos1, pos2)
+      pos1.ch += 4;
+      pos2.ch += 4;
+      editor.setSelection(pos1, pos2)
+      break;
+
+    default:
+      break;
+  }
   return {
     start: pos1,
     end: pos2,
