@@ -33,6 +33,14 @@ var Editor = function ({
             // }
           })
       },
+      'Shift-Ctrl-W': function (instance) {
+        self.evalAll((code, error) => {
+          if(window.ws && window.ws.readyState == WebSocket.OPEN ) {
+            window.ws.send(JSON.stringify({event:'editortext', message: JSON.stringify(code) }));
+          }
+        })
+    },
+
       'Shift-Ctrl-G': function (instance) {
         self.shareSketch()
       },

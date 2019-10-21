@@ -15,7 +15,22 @@ const {app, BrowserWindow} = electron
 let mainWindow
 let win
 let win1
+/**
+ flaring( () => midi.cc[17])
+  .out(o0)
 
+flaring( () => midi.cc[17] * 100.0)
+  .out(o1)
+
+plasma( () => midi.cc[18]  )
+	.modulateScale(o1, () => a.fft[0]*9)
+	.saturate(0.05)
+  .out(o3)
+
+render()
+
+
+ */
 function createWindow () {
 
  const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize
@@ -25,16 +40,17 @@ function createWindow () {
     height: height,
     x: 0,
     y: 0,
-  //  transparent: true,
+    //  transparent: true,
     webPreferences: {
       nodeIntegration: true,
     },
-  //  alwaysOnTop: true,
-  //  backgroundThrottling: false,
-  //  hasShadow:false,
-  //  frame: false
+    //  alwaysOnTop: true,
+    //  backgroundThrottling: false,
+    //  hasShadow:false,
+    //  frame: false
   })
-
+  
+  
 //  mainWindow.maximize()
 
   mainWindow.loadURL(`file://${__dirname}/public/index.html`)
@@ -43,11 +59,13 @@ function createWindow () {
   //console.log('SCREENS', electron.screen.getAllDisplays())
   //mainWindow.setIgnoreMouseEvents(true)
 
-
+  mainWindow.setFullScreen(true);
+  mainWindow.setMenuBarVisibility(false);
+  mainWindow.setAutoHideMenuBar(true);
 
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -78,19 +96,21 @@ app.on('ready', () => {
       //maxWidth += display.bounds.width;
       return display.bounds.x !== 0 || display.bounds.y !== 0
   })
-  let extDisplay = displays.find((display) => {
+  /*let extDisplay = displays.find((display) => {
     console.log('extDisplay:', display);
     maxWidth += display.bounds.width;
-    /*let w = new BrowserWindow({ 
-      x: display.bounds.x,
-      y: display.bounds.y, 
-      width: display.bounds.width, 
-      height: display.workArea.height, 
-      show: false, 
-      frame: false
-    });
-    w.loadURL(`file://${__dirname}/public/index.html`);
-    w.show();*/
+    
+    // let w = new BrowserWindow({ 
+    //   x: display.bounds.x,
+    //   y: display.bounds.y, 
+    //   width: display.bounds.width, 
+    //   height: display.workArea.height, 
+    //   show: false, 
+    //   frame: false
+    // });
+    // w.loadURL(`file://${__dirname}/public/index.html`);
+    // w.show();
+    
   });
   console.log('maxWidth:', maxWidth);
   if (externalDisplay) {
@@ -112,7 +132,7 @@ app.on('ready', () => {
   }
   else {
       //win = new BrowserWindow({ width, height, show: false, fullscreen: true })
-  }
+  }*/
   //win.loadURL(`file://${__dirname}/public/index.html`)
   
  // win = new BrowserWindow({show: false});
