@@ -5,7 +5,8 @@ var ipc = require('node-ipc');
 
 ipc.config.id = 'hydra-renderer';
 ipc.config.retry= 1500;
-
+//ipc.config.networkHost='localhost'; //should resolve to 127.0.0.1 or ::1
+ipc.config.networkPort=8088;
 ipc.connectToNet(
  'hydra',
  function(){

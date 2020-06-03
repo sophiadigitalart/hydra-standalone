@@ -9,6 +9,7 @@ const Editor = require('./core/hydra-editor')
 // Extensions
 const OscManager = require('./extensions/hydra-osc')
 const MidiManager = require('./extensions/hydra-midi')
+const IpcManager =  require('./extensions/extra/remoteCode')
 
 window.Clock = require('./extensions/clock.js')
 window.cc=Array(128).fill(0.5)
@@ -25,7 +26,8 @@ function init () {
   window.msg = new OscManager()
   // MIDI use like: osc( () => midi.cc[18]  ).out()
   window.midi = new MidiManager()
- 
+  //window.ipc = new IpcManager()
+
 // loop function run on each frame
   var engine = loop(function(dt) {
     hydra.tick(dt)

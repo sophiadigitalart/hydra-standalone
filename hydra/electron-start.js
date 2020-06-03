@@ -58,11 +58,11 @@ function createWindow () {
   // log screen info
   //console.log('SCREENS', electron.screen.getAllDisplays())
   //mainWindow.setIgnoreMouseEvents(true)
-
+/*
   mainWindow.setFullScreen(true);
   mainWindow.setMenuBarVisibility(false);
   mainWindow.setAutoHideMenuBar(true);
-
+*/
 
   // Open the DevTools.
   //mainWindow.webContents.openDevTools()
